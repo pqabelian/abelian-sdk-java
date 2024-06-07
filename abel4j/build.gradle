@@ -28,5 +28,5 @@ dependencies {
 
 jar {
     archiveBaseName = 'abel4j'
-    archiveVersion = '1.0.0'
+    archiveVersion = '1.1.0'
 }
