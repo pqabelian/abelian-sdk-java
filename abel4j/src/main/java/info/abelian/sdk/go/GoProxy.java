@@ -8,7 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.GeneratedMessage;
 import com.sun.jna.Native;
 
 import info.abelian.sdk.proto.Core.DecodeCoinValueFromTxVoutScriptArgs;
@@ -140,7 +140,7 @@ public class GoProxy {
     return resp;
   }
 
-  public Object callProtoGoFunc(String goFuncName, GeneratedMessageV3 args, Class<?> resultClass)
+  public Object callProtoGoFunc(String goFuncName, GeneratedMessage args, Class<?> resultClass)
       throws AbelGoException {
     byte[] argsData = args.toByteArray();
     GoResponse resp = callGoFunc(new GoRequest(goFuncName, DataItemType.V_BYTE_BUFFER, new DataItem[] {

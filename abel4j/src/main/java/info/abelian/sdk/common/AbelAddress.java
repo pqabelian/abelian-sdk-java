@@ -3,10 +3,14 @@ package info.abelian.sdk.common;
 import com.google.protobuf.ByteString;
 
 import info.abelian.sdk.go.GoProxy;
+import info.abelian.sdk.proto.Core.GetCryptoAddressFromAbelAddressArgs;
+import info.abelian.sdk.proto.Core.GetCryptoAddressFromAbelAddressResult;
 import info.abelian.sdk.proto.Core.GetShortAbelAddressFromAbelAddressArgs;
 import info.abelian.sdk.proto.Core.GetShortAbelAddressFromAbelAddressResult;
 
 public class AbelAddress extends Address {
+
+  private Bytes cryptoAddress;
 
   private ShortAbelAddress shortAddress;
 
@@ -22,6 +26,12 @@ public class AbelAddress extends Address {
   protected void initialize() {
     super.initialize();
     try {
+      GetCryptoAddressFromAbelAddressArgs cryptoAddressArgs = GetCryptoAddressFromAbelAddressArgs.newBuilder()
+              .setAbelAddress(ByteString.copyFrom(getData())).build();
+      GetCryptoAddressFromAbelAddressResult cryptoAddressResult = GoProxy.getInstance()
+              .goGetCryptoAddressFromAbelAddress(cryptoAddressArgs);
+      cryptoAddress = new Bytes(cryptoAddressResult.getCryptoAddress().toByteArray());
+
       GetShortAbelAddressFromAbelAddressArgs args = GetShortAbelAddressFromAbelAddressArgs.newBuilder()
           .setAbelAddress(ByteString.copyFrom(getData())).build();
       GetShortAbelAddressFromAbelAddressResult result = GoProxy.getInstance()
@@ -40,6 +50,10 @@ public class AbelAddress extends Address {
   @Override
   public Fingerprint getFingerprint() {
     return shortAddress.getFingerprint();
+  }
+
+  public Bytes getCryptoAddress() {
+    return cryptoAddress;
   }
 
   public ShortAbelAddress getShortAddress() {

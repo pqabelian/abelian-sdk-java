@@ -163,7 +163,8 @@ public class ChainViewer extends Wallet {
     try {
       DecodeCoinValueFromTxVoutScriptArgs args = DecodeCoinValueFromTxVoutScriptArgs.newBuilder()
           .setTxVoutScript(ByteString.copyFrom(vout.script.getData()))
-          .setViewSecretKey(ByteString.copyFrom(ownerAccount.getViewKey().getData())).build();
+          .setViewSecretKey(ByteString.copyFrom(ownerAccount.getViewKey().getData()))
+          .setCryptoAddress(ByteString.copyFrom(ownerAccount.getAddress().getCryptoAddress().getData())).build();
       DecodeCoinValueFromTxVoutScriptResult result = getGoProxy().goDecodeCoinValueFromTxVoutScript(args);
       value = result.getCoinValue();
     } catch (AbelGoException e) {
